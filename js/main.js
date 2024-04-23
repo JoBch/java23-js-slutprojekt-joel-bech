@@ -1,11 +1,12 @@
 import { displayMediaList, displayPersonList } from "./displayResult.js";
-import { fetchData } from "./fetchData.js"; 
+import { fetchData } from "./fetchData.js";
+import { noResult } from "./errorHandling.js";
 
 /** 
  * TODO
  * Need to make it async - dont know how, might have to start from the beginning?
  * Move the logic of handleSearch somewhere else
- * Make something with the errorhandling
+ * Make something with the errorhandling ----> something is done with errorHandling
  * Looked over the variables and functions names but it needs more looking into 
  * -------------------------
  * Maybe CSS isnt only for the non creative people?
@@ -15,6 +16,7 @@ import { fetchData } from "./fetchData.js";
 const searchForm = document.getElementById("searchForm");
 const topMoviesBtn = document.getElementById("topMovies");
 const popularMoviesBtn = document.getElementById("popularMovies");
+const resultContainer = document.getElementById("resultContainer");
 
 searchForm.addEventListener("submit", handleSearch);
 topMoviesBtn.addEventListener("click", handleTopMovies);
@@ -30,15 +32,18 @@ function handleTopMovies(event) {
   fetchData("movie/top_rated?", showMovies);
 }
 
-function handleSearch(event) {
+async function handleSearch(event) {
   event.preventDefault();
   const searchData = searchForm.querySelector("input").value;
   const searchType = searchForm.querySelector("select").value;
-  fetchData(`search/${searchType}?query=${searchData}&include_adult=false`, data => {
-    if (searchType === "movie") {
-      displayMediaList(data, ["release_date", "title", "poster_path", "overview"], true);
-    } else {
-      displayPersonList(data, ["name", "known_for_department", "profile_path", "known_for"]);
+  await fetchData(`search/${searchType}?query=${searchData}&include_adult=false`, data => {
+    if (data.total_results === 0) resultContainer.append(noResult());
+    else {
+      if (searchType === "movie") {
+        displayMediaList(data, ["release_date", "title", "poster_path", "overview"], true);
+      } else {
+        displayPersonList(data, ["name", "known_for_department", "profile_path", "known_for"]);
+      }
     }
   });
   searchForm.reset();

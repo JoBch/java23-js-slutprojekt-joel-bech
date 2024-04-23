@@ -32,6 +32,7 @@ export function displayMediaList(data, apiProperties, isFreeSearch) {
         outerListEl.appendChild(innerListEl);
     });
     resultContainer.appendChild(outerListEl);
+    console.log("displayMediaList")
 }
 
 export function displayPersonList(data, apiProperties) {
@@ -71,4 +72,5 @@ export function displayPersonList(data, apiProperties) {
         outerListEl.appendChild(innerListEl);
     });
     resultContainer.appendChild(outerListEl);
+    console.log("displayPersonList")
 }
