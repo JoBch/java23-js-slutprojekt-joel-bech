@@ -19,7 +19,7 @@ export function displayMediaList(data, apiProperties, isFreeSearch) {
         const innerSubListEl = document.createElement("ul");
         const imgEl = document.createElement("img");
         imgEl.src = basePosterURL + dataIndex.poster_path;
-        imgEl.alt = "Bilden hittades inte!";
+        imgEl.alt = "Picture not found!";
         innerListEl.appendChild(imgEl);
         Object.keys(dataIndex).forEach(keyValue => {
             if(keyValue !== "poster_path") {
@@ -50,7 +50,7 @@ export function displayPersonList(data, apiProperties) {
         const subListEl = document.createElement("ul");
         const imgEl = document.createElement("img");
         imgEl.src = baseProfileURL + (dataIndex.profile_path);
-        imgEl.alt = "Bilden hittades inte!";
+        imgEl.alt = "Picture not found!";
         innerListEl.appendChild(imgEl);
         Object.keys(dataIndex).forEach(keyValue => {
             if (keyValue !== "profile_path") {

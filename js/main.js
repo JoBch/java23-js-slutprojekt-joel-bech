@@ -1,6 +1,17 @@
 import { displayMediaList, displayPersonList } from "./displayResult.js";
 import { fetchData } from "./fetchData.js"; 
 
+/** 
+ * TODO
+ * Need to make it async - dont know how, might have to start from the beginning?
+ * Move the logic of handleSearch somewhere else
+ * Make something with the errorhandling
+ * Looked over the variables and functions names but it needs more looking into 
+ * -------------------------
+ * Maybe CSS isnt only for the non creative people?
+ * Add the functionality of a watchlist using LocalStorage
+ **/
+
 const searchForm = document.getElementById("searchForm");
 const topMoviesBtn = document.getElementById("topMovies");
 const popularMoviesBtn = document.getElementById("popularMovies");

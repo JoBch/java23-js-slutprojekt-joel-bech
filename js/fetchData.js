@@ -12,6 +12,7 @@ const options = {
     }
 };
 
+//Trying to make the project async but im stuck, so this is a start or something
 export async function fetchData(endpoint, callback) {
     try {
         fetch(`${API_URL}${endpoint}&language=en-US&page=1`, options)
