@@ -1,7 +1,10 @@
-const baseProfileURL ="https://image.tmdb.org/t/p/w185";
+import { addToWatchList } from "./watchList.js";
+
+const baseProfileURL = "https://image.tmdb.org/t/p/w185";
 const basePosterURL = "https://image.tmdb.org/t/p/w154";
 const resultContainer = document.getElementById("resultContainer");
 
+//Look over the variable names, might be able to make it easier to follow
 export function displayMediaList(data, apiProperties, isFreeSearch) {
     console.log(data);
     const listType = isFreeSearch === true ? "ul" : "ol";
@@ -21,8 +24,17 @@ export function displayMediaList(data, apiProperties, isFreeSearch) {
         imgEl.src = basePosterURL + dataIndex.poster_path;
         imgEl.alt = "Picture not found!";
         innerListEl.appendChild(imgEl);
+
+        // Create a button for adding to watchlist
+        const addToWatchlistBtn = document.createElement("button");
+        addToWatchlistBtn.textContent = "Add to Watchlist";
+        addToWatchlistBtn.addEventListener("click", () => {
+            addToWatchList(dataIndex.title, dataIndex.poster_path);
+        });
+        innerListEl.appendChild(addToWatchlistBtn);
+
         Object.keys(dataIndex).forEach(keyValue => {
-            if(keyValue !== "poster_path") {
+            if (keyValue !== "poster_path") {
                 const subListItem = document.createElement("li");
                 subListItem.textContent = `${keyValue}: ${dataIndex[keyValue]}`;
                 innerSubListEl.appendChild(subListItem);
