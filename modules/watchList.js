@@ -10,7 +10,7 @@ export function addToWatchList(title, posterPath) {
         localStorage.setItem("watchListData", JSON.stringify(watchList));
         console.log("Added to watchlist:", title);
     } else {
-        console.log("Already in watchlist:", title);
+        alert("Already in watchlist:", title);
     }
 }
 
@@ -21,9 +21,9 @@ export function displayWatchList() {
     const watchListUl = document.createElement("ul");
     const clearWatchListBtn = document.createElement("button");
     clearWatchListBtn.textContent = "Clear Watchlist";
-    
+
     clearWatchListBtn.addEventListener("click", () => {
-        watchList = []
+        watchList = [];
         resultContainer.innerHTML = "";
     });
     watchListUl.appendChild(clearWatchListBtn);
