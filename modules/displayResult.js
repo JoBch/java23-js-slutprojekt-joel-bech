@@ -1,10 +1,11 @@
+//Creates lists that is filled with the values specified when calling these functions in the eventlistener
+
 import { addToWatchList } from "./watchList.js";
 
 const baseProfileURL = "https://image.tmdb.org/t/p/w185";
 const basePosterURL = "https://image.tmdb.org/t/p/w154";
 const resultContainer = document.getElementById("resultContainer");
 
-//Look over the variable names, might be able to make it easier to follow
 export function displayMediaList(data, apiProperties, isFreeSearch) {
     console.log(data);
     const listType = isFreeSearch === true ? "ul" : "ol";
@@ -18,6 +19,7 @@ export function displayMediaList(data, apiProperties, isFreeSearch) {
     resultContainer.innerHTML = "";
     const outerListEl = document.createElement(listType);
     extractedData.forEach(dataIndex => {
+
         const innerListEl = document.createElement("li");
         const innerSubListEl = document.createElement("ul");
         const imgEl = document.createElement("img");
@@ -25,13 +27,12 @@ export function displayMediaList(data, apiProperties, isFreeSearch) {
         imgEl.alt = "Picture not found!";
         innerListEl.appendChild(imgEl);
 
-        // Create a button for adding to watchlist
         const addToWatchlistBtn = document.createElement("button");
         addToWatchlistBtn.textContent = "Add to Watchlist";
         addToWatchlistBtn.addEventListener("click", () => {
             addToWatchList(dataIndex.title, dataIndex.poster_path);
         });
-        innerListEl.appendChild(addToWatchlistBtn);
+        innerSubListEl.appendChild(addToWatchlistBtn);
 
         Object.keys(dataIndex).forEach(keyValue => {
             if (keyValue !== "poster_path") {
@@ -58,6 +59,7 @@ export function displayPersonList(data, apiProperties) {
     });
     resultContainer.innerHTML = "";
     const outerListEl = document.createElement("ul");
+
     extractedData.forEach(dataIndex => {
         const innerListEl = document.createElement("li");
         const subListEl = document.createElement("ul");
@@ -65,6 +67,7 @@ export function displayPersonList(data, apiProperties) {
         imgEl.src = baseProfileURL + (dataIndex.profile_path);
         imgEl.alt = "Picture not found!";
         innerListEl.appendChild(imgEl);
+
         Object.keys(dataIndex).forEach(keyValue => {
             if (keyValue !== "profile_path") {
                 const subListItem = document.createElement("li");

@@ -2,24 +2,14 @@ import { displayMediaList, displayPersonList } from "./modules/displayResult.js"
 import { fetchData } from "./modules/fetchData.js";
 import { noResult } from "./modules/errorHandling.js";
 import { displayWatchList } from "./modules/watchList.js";
-/** 
- * TODO
- * Need to make it async - dont know how, might have to start from the beginning? ---> Done some, might be enough? Read up
- * Move the logic of handleSearch somewhere else
- * Make something with the errorhandling ----> something is done with errorHandling
- * Looked over the variables and functions names but it needs more looking into 
- * -------------------------
- * Maybe CSS isnt only for the non creative people?
- * Add the functionality of a watchlist using LocalStorage ---> Not the prettiest but it works
- **/
 
-const searchForm = document.getElementById("searchForm");
+const searchFormEl = document.getElementById("searchForm");
 const topMoviesBtn = document.getElementById("topMovies");
 const popularMoviesBtn = document.getElementById("popularMovies");
-const resultContainer = document.getElementById("resultContainer");
+const resultContainerEl = document.getElementById("resultContainer");
 const showWatchListBtn = document.getElementById("showWatchList")
 
-searchForm.addEventListener("submit", handleSearchBtn);
+searchFormEl.addEventListener("submit", handleSearchBtn);
 topMoviesBtn.addEventListener("click", handleTopMoviesBtn);
 popularMoviesBtn.addEventListener("click", handlePopularMoviesBtn);
 showWatchListBtn.addEventListener("click", handleWatchListBtn);
@@ -41,10 +31,10 @@ function handleTopMoviesBtn(event) {
 
 async function handleSearchBtn(event) {
   event.preventDefault();
-  const searchData = searchForm.querySelector("input").value;
-  const searchType = searchForm.querySelector("select").value;
+  const searchData = searchFormEl.querySelector("input").value;
+  const searchType = searchFormEl.querySelector("select").value;
   await fetchData(`search/${searchType}?query=${searchData}&include_adult=false`, data => {
-    if (data.total_results === 0) resultContainer.append(noResult());
+    if (data.total_results === 0) resultContainerEl.append(noResult());
     else {
       if (searchType === "movie") {
         displayMediaList(data, ["release_date", "title", "poster_path", "overview"], true);
@@ -53,9 +43,10 @@ async function handleSearchBtn(event) {
       }
     }
   });
-  searchForm.reset();
+  searchFormEl.reset();
 }
 
+//Need this to handle the callback of "data" from fetchData()
 function showMovies(data) {
-  displayMediaList(data, ["release_date","original_title", "title", "poster_path", "overview"]);
+  displayMediaList(data, ["release_date", "original_title", "title", "poster_path", "overview"]);
 }

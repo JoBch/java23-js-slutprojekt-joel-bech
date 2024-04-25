@@ -1,43 +1,51 @@
+//Handles all of the watchList functionality using localStorage 
+
 export let watchList = JSON.parse(localStorage.getItem("watchListData"));
+
 const basePosterURL = "https://image.tmdb.org/t/p/w154";
 
 export function addToWatchList(title, posterPath) {
-    //Check if the movie is already in the watchlist ---> might skip this?
     const isAlreadyAdded = watchList.some(item => item.title === title);
 
     if (!isAlreadyAdded) {
         watchList.push({ title: title, posterPath: posterPath });
         localStorage.setItem("watchListData", JSON.stringify(watchList));
-        console.log("Added to watchlist:", title);
+        console.log("Added to watchlist : ", title);
     } else {
-        alert("Already in watchlist:", title);
+        alert("Already in watchlist : " + title);
     }
 }
 
 export function displayWatchList() {
-    const resultContainer = document.getElementById("resultContainer");
-    resultContainer.innerHTML = "";
+    const resultContainerEl = document.getElementById("resultContainer");
+    resultContainerEl.innerHTML = "";
     console.log(watchList);
     const watchListUl = document.createElement("ul");
-    const clearWatchListBtn = document.createElement("button");
-    clearWatchListBtn.textContent = "Clear Watchlist";
 
-    clearWatchListBtn.addEventListener("click", () => {
-        watchList = [];
-        resultContainer.innerHTML = "";
-    });
-    watchListUl.appendChild(clearWatchListBtn);
-
-    watchList.forEach(movie => {
+    watchList.forEach((movie, index) => {
         const innerListitem = document.createElement("li")
         const listItem = document.createElement("ul");
         const imgEl = document.createElement("img");
+        const clearWatchListBtn = document.createElement("button");
+
+        clearWatchListBtn.textContent = "Watched it!";
+        clearWatchListBtn.addEventListener("click", () => {
+            deleteFromWatchList(index);
+        });
+
         imgEl.src = basePosterURL + movie.posterPath;
         listItem.textContent = movie.title;
         innerListitem.appendChild(imgEl);
         listItem.appendChild(innerListitem);
+        listItem.appendChild(clearWatchListBtn);
         watchListUl.appendChild(listItem);
-    });
 
-    resultContainer.appendChild(watchListUl);
+    });
+    resultContainerEl.appendChild(watchListUl);
+}
+
+function deleteFromWatchList(index) {
+    watchList.splice(index, 1);
+    localStorage.setItem("watchListData", JSON.stringify(watchList));
+    displayWatchList();
 }
