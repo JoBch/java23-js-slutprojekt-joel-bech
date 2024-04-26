@@ -1,6 +1,7 @@
 //Handles all of the watchList functionality using localStorage 
 
-export let watchList = JSON.parse(localStorage.getItem("watchListData"));
+//Using || [] to make an empty array if watchListData == null, having some problems in Github Pages
+export let watchList = JSON.parse(localStorage.getItem("watchListData")) || [];
 
 const basePosterURL = "https://image.tmdb.org/t/p/w154";
 
