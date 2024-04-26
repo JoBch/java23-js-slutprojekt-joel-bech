@@ -1,3 +1,12 @@
+/**
+ * An application using the TMDB API.
+ * Author: Joel Bech
+ * © 2024. This work is licensed under CC BY-SA 4.0
+ * https://creativecommons.org/licenses/by-sa/4.0/?ref=chooser-v1 
+ * 
+ * An application that can be used for searching specific movies or actors with the use of the TMDB-API and also add movies to your watch list using localStorage.
+ * */
+
 import { displayMediaList, displayPersonList } from "./modules/displayResult.js";
 import { fetchData } from "./modules/fetchData.js";
 import { noResult } from "./modules/errorHandling.js";

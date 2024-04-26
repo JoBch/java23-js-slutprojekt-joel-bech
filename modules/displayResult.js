@@ -1,91 +1,94 @@
 //Creates lists that is filled with the values specified when calling these functions in the eventlistener
 
+//I've had a lot of trouble namning these variables as they represent every value that is displayed in my lists.
+//I hope i made it readable enough.
+
 import { addToWatchList } from "./watchList.js";
 
-const baseProfileURL = "https://image.tmdb.org/t/p/w185";
-const basePosterURL = "https://image.tmdb.org/t/p/w154";
-const resultContainer = document.getElementById("resultContainer");
+const posterBaseUrl = "https://image.tmdb.org/t/p/w185";
+const thumbnailBaseUrl = "https://image.tmdb.org/t/p/w154";
+const resultListContainer = document.getElementById("resultContainer");
 
-export function displayMediaList(data, apiProperties, isFreeSearch) {
+export function displayMediaList(data, propertiesToDisplay, isFreeSearch) {
     console.log(data);
     const listType = isFreeSearch === true ? "ul" : "ol";
     const extractedData = data.results.slice(0, isFreeSearch ? undefined : 10).map(item => {
         const extractedItem = {};
-        apiProperties.forEach(property => {
+        propertiesToDisplay.forEach(property => {
             extractedItem[property] = item[property];
         });
         return extractedItem;
     });
-    resultContainer.innerHTML = "";
+    resultListContainer.innerHTML = "";
     const outerListEl = document.createElement(listType);
-    extractedData.forEach(dataIndex => {
+    extractedData.forEach(extractedDataIndex => {
 
-        const innerListEl = document.createElement("li");
+        const listItemEl = document.createElement("li");
         const innerSubListEl = document.createElement("ul");
-        const imgEl = document.createElement("img");
-        imgEl.src = basePosterURL + dataIndex.poster_path;
-        imgEl.alt = "Picture not found!";
-        innerListEl.appendChild(imgEl);
+        const thumbnailEl = document.createElement("img");
+        thumbnailEl.src = thumbnailBaseUrl + extractedDataIndex.poster_path;
+        thumbnailEl.alt = "Picture not found!";
+        listItemEl.appendChild(thumbnailEl);
 
         const addToWatchlistBtn = document.createElement("button");
         addToWatchlistBtn.textContent = "Add to Watchlist";
         addToWatchlistBtn.addEventListener("click", () => {
-            addToWatchList(dataIndex.title, dataIndex.poster_path);
+            addToWatchList(extractedDataIndex.title, extractedDataIndex.poster_path);
         });
         innerSubListEl.appendChild(addToWatchlistBtn);
 
-        Object.keys(dataIndex).forEach(keyValue => {
-            if (keyValue !== "poster_path") {
+        Object.keys(extractedDataIndex).forEach(apiKeyValue => {
+            if (apiKeyValue !== "poster_path") {
                 const subListItem = document.createElement("li");
-                subListItem.textContent = `${keyValue}: ${dataIndex[keyValue]}`;
+                subListItem.textContent = `${apiKeyValue}: ${extractedDataIndex[apiKeyValue]}`;
                 innerSubListEl.appendChild(subListItem);
             }
         });
-        innerListEl.appendChild(innerSubListEl);
-        outerListEl.appendChild(innerListEl);
+        listItemEl.appendChild(innerSubListEl);
+        outerListEl.appendChild(listItemEl);
     });
-    resultContainer.appendChild(outerListEl);
-    console.log("displayMediaList")
+    resultListContainer.appendChild(outerListEl);
+    console.log("displayMediaList");
 }
 
-export function displayPersonList(data, apiProperties) {
+export function displayPersonList(data, propertiesToDisplay) {
     console.log(data);
     const extractedData = data.results.map(item => {
         const extractedItem = {};
-        apiProperties.forEach(property => {
+        propertiesToDisplay.forEach(property => {
             extractedItem[property] = item[property];
         });
         return extractedItem;
     });
-    resultContainer.innerHTML = "";
+    resultListContainer.innerHTML = "";
     const outerListEl = document.createElement("ul");
 
-    extractedData.forEach(dataIndex => {
-        const innerListEl = document.createElement("li");
-        const subListEl = document.createElement("ul");
-        const imgEl = document.createElement("img");
-        imgEl.src = baseProfileURL + (dataIndex.profile_path);
-        imgEl.alt = "Picture not found!";
-        innerListEl.appendChild(imgEl);
+    extractedData.forEach(extractedDataIndex => {
+        const listItemEl = document.createElement("li");
+        const innerSubListEl = document.createElement("ul");
+        const profileImgEl = document.createElement("img");
+        profileImgEl.src = posterBaseUrl + extractedDataIndex.profile_path;
+        profileImgEl.alt = "Picture not found!";
+        listItemEl.appendChild(profileImgEl);
 
-        Object.keys(dataIndex).forEach(keyValue => {
-            if (keyValue !== "profile_path") {
+        Object.keys(extractedDataIndex).forEach(apiKeyValue => {
+            if (apiKeyValue !== "profile_path") {
                 const subListItem = document.createElement("li");
-                subListItem.textContent = `${keyValue}: ${dataIndex[keyValue]}`;
-                if (keyValue === "known_for") {
-                    dataIndex[keyValue].forEach(data => {
+                subListItem.textContent = `${apiKeyValue}: ${extractedDataIndex[apiKeyValue]}`;
+                if (apiKeyValue === "known_for") {
+                    extractedDataIndex[apiKeyValue].forEach(known_forItem => {
                         const nestedSubListItem = document.createElement("li");
-                        nestedSubListItem.textContent = `${data.media_type}: ${data.media_type === "movie" ? data.title : data.name}`;
-                        subListEl.appendChild(nestedSubListItem);
+                        nestedSubListItem.textContent = `${known_forItem.media_type}: ${known_forItem.media_type === "movie" ? known_forItem.title : known_forItem.name}`;
+                        innerSubListEl.appendChild(nestedSubListItem);
                     });
                 } else {
-                    subListEl.appendChild(subListItem);
+                    innerSubListEl.appendChild(subListItem);
                 }
             }
         });
-        innerListEl.appendChild(subListEl);
-        outerListEl.appendChild(innerListEl);
+        listItemEl.appendChild(innerSubListEl);
+        outerListEl.appendChild(listItemEl);
     });
-    resultContainer.appendChild(outerListEl);
-    console.log("displayPersonList")
+    resultListContainer.appendChild(outerListEl);
+    console.log("displayPersonList");
 }
