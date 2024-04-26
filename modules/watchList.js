@@ -10,7 +10,7 @@ export function addToWatchList(title, posterPath) {
     if (!isAlreadyAdded) {
         watchList.push({ title: title, posterPath: posterPath });
         localStorage.setItem("watchListData", JSON.stringify(watchList));
-        console.log("Added to watchlist : ", title);
+        aler("Added to watchlist : " + title);
     } else {
         alert("Already in watchlist : " + title);
     }
