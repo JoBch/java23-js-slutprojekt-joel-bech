@@ -1,6 +1,6 @@
 //Handles all of the watchList functionality using localStorage 
 
-//Using || [] to make an empty array if watchListData == null, having some problems in Github Pages
+//Using || [] to make an empty array if watchListData == null
 export let watchList = JSON.parse(localStorage.getItem("watchListData")) || [];
 
 const basePosterURL = "https://image.tmdb.org/t/p/w154";
@@ -11,7 +11,7 @@ export function addToWatchList(title, posterPath) {
     if (!isAlreadyAdded) {
         watchList.push({ title: title, posterPath: posterPath });
         localStorage.setItem("watchListData", JSON.stringify(watchList));
-        aler("Added to watchlist : " + title);
+        alert("Added to watchlist : " + title);
     } else {
         alert("Already in watchlist : " + title);
     }
